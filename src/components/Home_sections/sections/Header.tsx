@@ -1,42 +1,30 @@
-"use client"
-import ArrowRight from "@/assets/arrow-right.svg"
-import Logo from "@/assets/logosaas.png"
-import Image from "next/image"
-import MenuIcon from "@/assets/menu.svg"
-import Link from 'next/link'
-import { usePathname } from "next/navigation"
-import { useState } from "react"
+"use client";
+import ArrowRight from "@/assets/arrow-right.svg";
+import Logo from "@/assets/logosaas.png";
+import Image from "next/image";
+import MenuIcon from "@/assets/menu.svg";
+import Link from 'next/link';
+import { usePathname } from "next/navigation";
+import { useState, FC } from "react";
 
-export const Header = () => {
+// กำหนดประเภทของข้อมูลสำหรับรายการเมนู
+interface MenuItem {
+  name: string;
+  link: string;
+}
 
-  const path = usePathname()
-  const menuItem = [
+export const Header: FC = () => {
+  const path = usePathname();
+  const menuItem: MenuItem[] = [
+    { name: "BasicHook", link: "/basichook" },
+    { name: "Features", link: "/features" },
+    { name: "Customers", link: "/customers" },
+    { name: "Updates", link: "/updates" },
+    { name: "Help", link: "/help" },
+  ];
 
-    {
-      name: "About",
-      link: "/about",
-    },
-    {
-      name: "Features",
-      link: "/features",
-    },
-    {
-      name: "Customers",
-      link: "/customers",
-    },
-    {
-      name: "Updates",
-      link: "/updates",
-    },
-    {
-      name: "Help",
-      link: "/help",
-    },
-
-  ]
-
-  const [isOpen, setOpen] = useState(false)
-  const toggleMenu = () => setOpen(!isOpen)
+  const [isOpen, setOpen] = useState<boolean>(false);
+  const toggleMenu = () => setOpen(!isOpen);
 
   return (
     <header className="sticky top-0 backdrop-blur-sm z-20">
@@ -54,10 +42,8 @@ export const Header = () => {
       <div className="py-5">
         <div className="container">
           <div className="flex items-center justify-between">
-            <Link 
-              href="/"
-            >
-              <Image src={Logo}alt="Saas Logo" height={40} width={40} />
+            <Link href="/">
+              <Image src={Logo} alt="Saas Logo" height={40} width={40} />
             </Link>
             <button onClick={toggleMenu}>
               <MenuIcon className="h-5 w-5 md:hidden" />
@@ -65,44 +51,41 @@ export const Header = () => {
 
             <nav className="hidden md:flex gap-6 text-black/60 items-center">
               {
-                menuItem.map(
-                  (menu) => {
-                    const isActive = menu.link === path
-                    return (
-                      <Link href={menu.link} key={menu.link} className={isActive? "text-black/100" : ""}>
-                        {menu.name}
-                      </Link>
-                    )
-                  }
-                )
+                menuItem.map((menu) => {
+                  const isActive = menu.link === path;
+                  return (
+                    <Link href={menu.link} key={menu.link} className={isActive ? "text-black/100" : ""}>
+                      {menu.name}
+                    </Link>
+                  );
+                })
               }
-              <button className="bg-black text-white px-4 py-2 rounded-lg font-medium inline-flex align-items justify-center tracking-tight">Get for free</button>
+              <button className="bg-black text-white px-4 py-2 rounded-lg font-medium inline-flex align-items justify-center tracking-tight">
+                Get for free
+              </button>
             </nav>
           </div>
 
-          {isOpen &&
-            (
-              <div className="mt-5 md:hidden">
-                <nav className="flex flex-col gap-6 text-black/60">
-                  {
-                    menuItem.map(
-                      (menu) => {
-                        const isActive = menu.link === path
-                        return (
-                            <Link href={menu.link} key={menu.link} className={isActive? "text-black/100" : ""} onClick={toggleMenu}>
-                              {menu.name}
-                            </Link>
-                        )
-                      }
-                    )
-                  }
+          {isOpen && (
+            <div className="mt-5 md:hidden">
+              <nav className="flex flex-col gap-6 text-black/60">
+                {
+                  menuItem.map((menu) => {
+                    const isActive = menu.link === path;
+                    return (
+                      <Link href={menu.link} key={menu.link} className={isActive ? "text-black/100" : ""} onClick={toggleMenu}>
+                        {menu.name}
+                      </Link>
+                    );
+                  })
+                }
 
-                  <button className="bg-black text-white px-4 py-2 rounded-lg font-medium inline-flex align-items justify-center tracking-tight">Get for free</button>
-                </nav>
-              </div>
-            )
-          }
-
+                <button className="bg-black text-white px-4 py-2 rounded-lg font-medium inline-flex align-items justify-center tracking-tight">
+                  Get for free
+                </button>
+              </nav>
+            </div>
+          )}
         </div>
       </div>
     </header>
